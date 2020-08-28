@@ -78,6 +78,8 @@ if ( FLECSI_SP_RUNTIME_MODEL STREQUAL "mpi" )
   set( FLECSI_SP_UNIT_POLICY MPI )
 elseif ( FLECSI_SP_RUNTIME_MODEL STREQUAL "legion" )
   set( FLECSI_SP_UNIT_POLICY LEGION )
+elseif ( FLECSI_SP_RUNTIME_MODEL STREQUAL "hpx" )
+  set( FLECSI_SP_UNIT_POLICY HPX )
 else()
   MESSAGE( FATAL_ERROR 
     "Unknown FLECSI_SP_RUNTIME_MODEL being used: ${FLECSI_SP_RUNTIME_MODEL}" )
@@ -152,7 +154,7 @@ cinch_load_extras()
 
 
 #------------------------------------------------------------------------------#
-# Legion / MPI
+# Legion / MPI / HPX
 #------------------------------------------------------------------------------#
 
 find_package(Legion)
@@ -165,6 +167,12 @@ find_package(MPI COMPONENTS C CXX REQUIRED)
 
 if (MPI_FOUND) 
   list(APPEND FLECSI_SP_LIBRARIES MPI::MPI_CXX MPI::MPI_C)
+endif()
+
+find_package(HPX)
+
+if (HPX_FOUND) 
+  list(APPEND FLECSI_SP_LIBRARIES HPX::hpx)
 endif()
 
 #------------------------------------------------------------------------------#
